@@ -10,12 +10,12 @@
 Agent 底座：smolagents
 Memory 起点：Mem0
 工程推进：Codex 持续维护
-当前阶段：P0 初始化
+当前阶段：P1 最小 agent 工程骨架
 ```
 
 ## 当前阶段目标
 
-P0：把项目整理成可由 Codex 跨会话持续推进的状态。
+P1：在已完成文档和项目骨架基础上，跑通 `smolagents` 最小 agent。
 
 退出条件：
 
@@ -24,7 +24,7 @@ P0：把项目整理成可由 Codex 跨会话持续推进的状态。
 - `PROJECT_RULES.md` 记录项目规则。
 - `PROJECT_INIT.md` 记录初始化配置。
 - `AGENTS.md` 作为 Codex 接手入口。
-- 用户审核通过后初始化 git 仓库。
+- 用户已审核通过并初始化 git 仓库。
 
 ## 任务看板
 
@@ -44,16 +44,16 @@ P0：把项目整理成可由 Codex 跨会话持续推进的状态。
 | P0-T4 | DONE | P0 | 新建项目规则文件 | `PROJECT_RULES.md` |
 | P0-T5 | DONE | P0 | 新建初始化配置文件 | `PROJECT_INIT.md` |
 | P0-T6 | DONE | P0 | 新建 Codex 接手入口文件 | `AGENTS.md` |
-| P0-T7 | TODO | P0 | 用户审核文档体系 | 用户确认 |
-| P0-T8 | TODO | P0 | 初始化 git 仓库 | `.git/` |
-| P0-T9 | TODO | P0 | 创建工程骨架 | `pyproject.toml`、`configs/`、`agent_lab/`、`eval/` |
+| P0-T7 | DONE | P0 | 用户审核文档体系 | 用户确认 |
+| P0-T8 | DONE | P0 | 初始化 git 仓库 | `.git/` |
+| P0-T9 | DONE | P0 | 创建工程骨架 | `pyproject.toml`、`configs/`、`agent_lab/`、`eval/` |
 | P1-T1 | TODO | P1 | 安装并跑通 `smolagents` 最小样例 | smoke test |
-| P1-T2 | TODO | P1 | 实现 `AgentRunner` | `agent_lab/agent_runner.py` |
-| P1-T3 | TODO | P1 | 实现受控工具集 | `agent_lab/tools/` |
-| P1-T4 | TODO | P1 | 实现 trace logger | `agent_lab/trace.py` |
-| P2-T1 | TODO | P2 | 定义 `MemoryBackend` 接口 | `agent_lab/memory/base.py` |
-| P2-T2 | TODO | P2 | 实现 `NoMemoryBackend` | baseline |
-| P2-T3 | TODO | P2 | 实现 `RawHistoryBackend` | baseline |
+| P1-T2 | DOING | P1 | 实现 `AgentRunner` | `agent_lab/agent_runner.py` |
+| P1-T3 | DOING | P1 | 实现受控工具集 | `agent_lab/tools/` |
+| P1-T4 | DONE | P1 | 实现 trace logger | `agent_lab/trace.py` |
+| P2-T1 | DONE | P2 | 定义 `MemoryBackend` 接口 | `agent_lab/memory/base.py` |
+| P2-T2 | DONE | P2 | 实现 `NoMemoryBackend` | baseline |
+| P2-T3 | DONE | P2 | 实现 `RawHistoryBackend` | baseline |
 | P2-T4 | TODO | P2 | 实现 `Mem0Backend` | memory backend |
 | P3-T1 | TODO | P3 | 定义自建评测 JSONL schema | dataset schema |
 | P3-T2 | TODO | P3 | 构造 30-50 条自建样本 | custom cases |
@@ -69,10 +69,19 @@ P0：把项目整理成可由 Codex 跨会话持续推进的状态。
 | 2026-07-06 | 选用 `smolagents` 作为 agent 底座 | 轻量、可拆、适合接记忆系统 |
 | 2026-07-06 | 选用 `Mem0` 作为记忆系统起点 | 接入快，适合作为第一版优化对象 |
 | 2026-07-06 | 文档拆分为计划、状态、规则、初始化、入口 | 便于 Codex 跨会话持续推进 |
+| 2026-07-06 | 先创建无网络依赖的工程骨架 | 便于后续安装依赖前先稳定接口和规则 |
+
+## 验证记录
+
+| 日期 | 验证 | 结果 | 备注 |
+|---|---|---|---|
+| 2026-07-06 | 标准库 smoke check | PASS | 验证 `NoMemoryBackend`、`RawHistoryBackend`、calculator；本机默认 `python3` 为 3.9.6 |
+| 2026-07-06 | `python3 -m pytest` | NOT RUN | 当前系统 Python 未安装 pytest；待创建正式 3.11/uv 环境后运行 |
 
 ## 下次接手建议
 
-1. 等用户审核文档。
-2. 用户通过后初始化 git 仓库。
-3. 创建 `pyproject.toml`、`.gitignore`、`.env.example`、`configs/`、`agent_lab/`、`eval/`。
-4. 进入 P1，跑通 `smolagents` 最小样例。
+1. 创建正式 Python 3.11/uv 环境。
+2. 安装 dev 依赖并运行 `python -m pytest`。
+3. 安装 `smolagents` 和 `mem0ai` 后进入 P1-T1。
+4. 将 `AgentRunner` 从 skeleton 接到真实 `smolagents`。
+5. 实现受控 shell 和 vision 工具的安全版本。

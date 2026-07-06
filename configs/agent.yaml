@@ -1,0 +1,15 @@
+agent:
+  framework: smolagents
+  type: code_agent
+  max_steps: 8
+  enable_trace: true
+  tools:
+    calculator: true
+    files: true
+    shell: false
+    vision: false
+
+safety:
+  workspace_root: .
+  allow_shell: false
+  shell_timeout_seconds: 20

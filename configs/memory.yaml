@@ -1,0 +1,18 @@
+memory:
+  backend: no_memory
+  top_k: 5
+  namespace:
+    user_id: default_user
+    project_id: default_project
+  write_policy:
+    enabled: true
+    require_memory_type: true
+    allow_ephemeral_task_state: true
+
+backends:
+  no_memory: {}
+  raw_history:
+    max_items: 1000
+  mem0:
+    mode: library
+    config_path:

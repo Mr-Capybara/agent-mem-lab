@@ -1,0 +1,35 @@
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Environments
+.venv/
+venv/
+.env
+
+# Project outputs
+traces/*
+!traces/.gitkeep
+eval/reports/*
+!eval/reports/.gitkeep
+data/raw/
+data/cache/
+
+# Local model/vector data
+models/
+vector_store/
+chroma/
+qdrant_storage/
+faiss_index/
+
+# Logs and temp files
+*.log
+tmp/

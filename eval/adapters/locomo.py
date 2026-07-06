@@ -1,0 +1,2 @@
+"""LoCoMo adapter placeholder."""
+

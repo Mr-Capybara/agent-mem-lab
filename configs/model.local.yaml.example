@@ -1,0 +1,11 @@
+model:
+  provider: openai_compatible
+  base_url: http://localhost:11434/v1
+  api_key: local
+  model_name: qwen2.5:7b
+
+vision_model:
+  provider: openai_compatible
+  base_url: http://localhost:11434/v1
+  api_key: local
+  model_name: qwen2.5vl:7b

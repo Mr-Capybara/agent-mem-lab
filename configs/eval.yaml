@@ -1,0 +1,10 @@
+eval:
+  datasets:
+    custom: eval/datasets/custom_memory_cases.jsonl
+  backends:
+    - no_memory
+    - raw_history
+    - mem0
+  output_dir: eval/reports
+  trace_dir: traces
+  max_cases:
