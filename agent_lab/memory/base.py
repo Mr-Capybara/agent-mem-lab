@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any, Literal
 from uuid import uuid4
 
@@ -28,7 +28,7 @@ class MemoryEvent:
     project_id: str = "default_project"
     session_id: str = "default_session"
     source: str = "agent"
-    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    timestamp: datetime = field(default_factory=lambda: datetime.now(UTC))
     metadata: dict[str, Any] = field(default_factory=dict)
 
 
@@ -47,7 +47,7 @@ class MemoryRecord:
     metadata: dict[str, Any] = field(default_factory=dict)
 
     @classmethod
-    def from_event(cls, event: MemoryEvent) -> "MemoryRecord":
+    def from_event(cls, event: MemoryEvent) -> MemoryRecord:
         return cls(
             id=str(uuid4()),
             content=event.content,

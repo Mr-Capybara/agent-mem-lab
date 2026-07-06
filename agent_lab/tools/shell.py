@@ -11,4 +11,6 @@ class ControlledShell:
     """
 
     def run(self, command: str) -> str:
-        raise NotImplementedError("Controlled shell is disabled until safety rules are implemented.")
+        raise NotImplementedError(
+            "Controlled shell is disabled until safety rules are implemented."
+        )

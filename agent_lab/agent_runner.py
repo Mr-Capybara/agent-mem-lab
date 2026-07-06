@@ -56,4 +56,6 @@ class AgentRunner:
             memory_context=memory_context,
             final_answer="",
         )
-        raise NotImplementedError("smolagents integration will be implemented in P1-T2.")
+        raise NotImplementedError(
+            f"smolagents integration will be implemented in P1-T2; trace_id={trace.trace_id}."
+        )

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import ast
 import operator
-from typing import Callable
+from collections.abc import Callable
 
 _OPERATORS: dict[type[ast.operator], Callable[[float, float], float]] = {
     ast.Add: operator.add,

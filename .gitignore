@@ -16,6 +16,7 @@ venv/
 .env
 
 # Project outputs
+.local/
 traces/*
 !traces/.gitkeep
 eval/reports/*
