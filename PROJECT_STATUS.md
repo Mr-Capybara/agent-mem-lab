@@ -48,7 +48,7 @@ P1：在已完成文档和项目骨架基础上，跑通 `smolagents` 最小 age
 | P0-T8 | DONE | P0 | 初始化 git 仓库 | `.git/` |
 | P0-T9 | DONE | P0 | 创建工程骨架 | `pyproject.toml`、`configs/`、`agent_lab/`、`eval/` |
 | P1-T1 | DONE | P1 | 安装并跑通 `smolagents` 最小样例 | smoke test |
-| P1-T2 | DOING | P1 | 实现 `AgentRunner` | `agent_lab/agent_runner.py` |
+| P1-T2 | DONE | P1 | 实现 `AgentRunner` | `agent_lab/agent_runner.py` |
 | P1-T3 | DOING | P1 | 实现受控工具集 | `agent_lab/tools/` |
 | P1-T4 | DONE | P1 | 实现 trace logger | `agent_lab/trace.py` |
 | P2-T1 | DONE | P2 | 定义 `MemoryBackend` 接口 | `agent_lab/memory/base.py` |
@@ -72,6 +72,7 @@ P1：在已完成文档和项目骨架基础上，跑通 `smolagents` 最小 age
 | 2026-07-06 | 先创建无网络依赖的工程骨架 | 便于后续安装依赖前先稳定接口和规则 |
 | 2026-07-06 | 使用 Homebrew 安装 `uv` 和 Python 3.11 | 建立正式项目运行环境 |
 | 2026-07-06 | 将 Mem0 本地状态目录重定向到项目 `.local/mem0` | 避免默认写入 `~/.mem0` |
+| 2026-07-06 | `AgentRunner` 接入真实 `smolagents` loop | 通过离线 FakeModel 保持可重复测试 |
 
 ## 验证记录
 
@@ -83,11 +84,11 @@ P1：在已完成文档和项目骨架基础上，跑通 `smolagents` 最小 age
 | 2026-07-06 | `.venv` ruff | PASS | `ruff check --no-cache .` passed |
 | 2026-07-06 | smolagents smoke | PASS | 使用本地 FakeModel 初始化 `ToolCallingAgent` 并调用测试工具 |
 | 2026-07-06 | Mem0 import | PASS | 设置 `MEM0_DIR=.local/mem0` 后 import 成功 |
+| 2026-07-06 | AgentRunner integration | PASS | 4 tests passed；验证 memory_context、ToolCallingAgent、trace JSONL |
 
 ## 下次接手建议
 
-1. 将 `AgentRunner` 从 skeleton 接到真实 `smolagents`。
-2. 为 calculator 工具提供 smolagents Tool 包装。
-3. 将 trace writer 接入最小 agent run。
-4. 实现受控 shell 和 vision 工具的安全版本。
-5. 提交本轮依赖环境与 smoke test 改动。
+1. 实现受控 shell 工具的安全版本。
+2. 实现轻量 vision 工具占位到可配置接口。
+3. 开始 P2-T4：接入 `Mem0Backend`，并保持 `MEM0_DIR` 项目内重定向。
+4. 为 `AgentRunner` 增加真实 OpenAI-compatible model 配置入口。
