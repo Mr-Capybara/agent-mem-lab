@@ -1,70 +1,44 @@
 # Project Rules
 
-更新日期：2026-07-06
+更新日期：2026-07-07
 
-本文件记录项目长期规则。后续 Codex 或其他 agent 接手时必须先读本文件。
+## 硬约束
 
-## 1. 项目边界
-
-- 第一阶段固定使用 `smolagents + Mem0`。
-- 不在第一阶段引入重型多 agent 平台。
-- 不在第一阶段追求完整桌面 GUI agent。
-- 不在第一阶段做成熟自进化算法。
-- 所有架构必须允许替换 memory backend。
-
-## 2. 工程规则
-
-- 使用 Python。
+- 第一阶段固定主线：`smolagents + Mem0 + Python`。
 - 包管理器优先使用 `uv`。
-- 代码必须保持模块小而清晰。
-- 不把业务逻辑写死到 Mem0 API 上。
-- 任何 memory backend 都必须实现统一 `MemoryBackend` 接口。
-- 配置必须外置到 `configs/` 或 `.env`，不要硬编码密钥、模型地址、路径。
-- 真实 API Key 只能放在本地环境变量或未跟踪 `.env`，不得写入仓库、配置示例或测试。
-- 所有实验输出写入 `traces/` 或 `eval/reports/`，不要混在源码目录。
+- 真实 API key 只能来自本地环境变量或未跟踪 `.env`，不得写入仓库、测试、配置示例、commit message 或命令输出。
+- qwen3.7-plus 使用 OpenAI-compatible 接口：`WQ_API_KEY`、`WQ_BASE_URL`、`WQ_MODEL_ID`。
+- 长期记忆必须通过统一 `MemoryBackend` 接口接入，不能把业务逻辑写死到 Mem0。
+- 所有实验和 agent 运行必须能保存 trace。
+- 默认不做完整桌面 GUI agent，不做生产运维 agent，不做任意 shell agent。
 
-## 3. Agent 执行安全
+## 安全边界
 
 - 不直接暴露任意 shell 给 agent。
-- shell 能力必须通过受控工具封装。
-- 受控 shell 至少要限制工作目录、命令白名单或危险命令拦截。
-- 文件读写默认限制在项目目录或实验 sandbox 目录。
-- 不允许 agent 自动执行删除、重置、覆盖大量文件等危险操作。
-- 多模态工具默认只做图片、截图、OCR、图表读数等轻量任务。
+- shell 工具必须限制工作目录、命令白名单、超时和危险命令。
+- 禁止 agent 自动执行删除、重置、批量覆盖、权限变更、后台常驻进程等高风险操作。
+- 文件读写默认限制在项目目录或显式 sandbox 目录。
+- 多模态第一阶段只做图片、截图、OCR/图表读数等轻量能力。
 
-## 4. 记忆系统规则
+## 工程规则
 
-- 长期记忆由外部 `MemoryBackend` 管理，不依赖 `smolagents` 内部 memory。
-- 每次 agent 调用前记录检索到的 `retrieved_memories`。
-- 每次 prompt 注入前记录实际注入的 `memory_context`。
-- 每次写入记忆时记录 `memory_writes`。
-- 记忆必须带元数据：`user_id`、`project_id`、`session_id`、`memory_type`、`source`、`timestamp`。
-- 对事实更新和偏好更新必须保留时间或版本信息。
-- 没有依据的记忆问题必须允许 agent 拒答，不得鼓励编造。
+- 配置外置到 `configs/` 或环境变量，不硬编码路径、密钥、模型地址。
+- 测试默认使用 offline model，不依赖真实 API。
+- 新增真实 API 能力时必须有 offline fallback。
+- 代码保持小模块；新增能力要配测试。
+- 运行输出写入 `traces/` 或 `eval/reports/`，不要混入源码目录。
 
-## 5. 评测规则
+## 评测规则
 
-- 所有能力都要能通过自动化评测调用。
-- 至少保留三组 baseline：`no_memory`、`raw_history`、`mem0`。
+- baseline 至少保留：`no_memory`、`raw_history`、`mem0`。
 - 同一批 case 必须能在不同 backend 下重复运行。
-- 每次评测必须保存配置、模型、backend、输入、输出、trace、metrics。
-- 优先自建小样本闭环，再接公开 benchmark。
+- 每次评测记录配置、模型、backend、输入、输出、trace、metrics。
+- 优先自建小样本闭环，再接 LongMemEval/LoCoMo。
 - 新优化必须报告收益和 regression。
 
-## 6. 文档维护规则
+## 文档规则
 
 - `PROJECT_STATUS.md` 是唯一任务状态源。
-- `PROJECT_RULES.md` 是唯一规则源。
-- `agent_memory_project_plan.md` 只维护目标、路线、架构，不放详细任务看板。
-- `PROJECT_INIT.md` 维护初始化配置和环境清单。
-- 完成任务后必须更新 `PROJECT_STATUS.md`。
-- 改变规则前必须更新 `PROJECT_RULES.md`，并在状态文件记录决策。
-
-## 7. Codex 工作规则
-
-- 每次开始新会话，先读 `AGENTS.md`。
-- 再读 `PROJECT_STATUS.md` 和 `PROJECT_RULES.md`。
-- 若任务涉及路线或架构，再读 `agent_memory_project_plan.md`。
-- 若任务涉及初始化、依赖、配置，再读 `PROJECT_INIT.md`。
-- 不要依赖上个会话的隐式上下文。
-- 重要实验结论必须落文档。
+- `PROJECT_RULES.md` 是唯一长期规则源。
+- `agent_memory_project_plan.md` 只放目标架构和阶段路线。
+- 完成任务后更新状态文件；改变长期约束才更新规则文件。
