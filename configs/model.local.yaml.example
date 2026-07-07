@@ -1,11 +1,20 @@
 model:
+  provider: offline
+
+wq_model:
+  provider: wq_openai_compatible
+  base_url: http://wanqing.internal/api/gateway/v1/endpoints
+  api_key_env: WQ_API_KEY
+  model_name: ep-1rl9f4-1783391033049812063
+
+local_model:
   provider: openai_compatible
   base_url: http://localhost:11434/v1
-  api_key: local
+  api_key_env: OPENAI_API_KEY
   model_name: qwen2.5:7b
 
 vision_model:
   provider: openai_compatible
   base_url: http://localhost:11434/v1
-  api_key: local
+  api_key_env: OPENAI_API_KEY
   model_name: qwen2.5vl:7b

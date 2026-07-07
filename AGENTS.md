@@ -17,7 +17,7 @@
 Agent 底座：smolagents
 Memory 起点：Mem0
 目标：构建 agent 记忆系统实验台
-阶段：P0 初始化
+阶段：P1 agent 能力接入
 ```
 
 ## 工作方式

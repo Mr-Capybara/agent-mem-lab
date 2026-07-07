@@ -34,3 +34,22 @@ python -m pytest
 ```
 
 后续安装依赖后再补充 `uv` 命令和 agent smoke test。
+
+
+## 真实模型 smoke
+
+本项目支持 qwen3.7-plus 的 OpenAI-compatible 接入。不要把真实 API Key 写入仓库；只在本地 shell 或未跟踪 `.env` 中设置：
+
+```bash
+export AGENT_MODEL_PROVIDER=wq_openai_compatible
+export WQ_API_KEY=...
+export WQ_BASE_URL=http://wanqing.internal/api/gateway/v1/endpoints
+export WQ_MODEL_ID=ep-1rl9f4-1783391033049812063
+.venv/bin/python scripts/run_agent_once.py --provider wq_openai_compatible "请用一句话介绍太阳系。"
+```
+
+离线 smoke 不需要外部模型：
+
+```bash
+.venv/bin/python scripts/run_agent_once.py --provider offline "请用一句话介绍太阳系。" --trace /private/tmp/agent-mem-lab-offline-manual.jsonl
+```

@@ -20,6 +20,7 @@
 - 不把业务逻辑写死到 Mem0 API 上。
 - 任何 memory backend 都必须实现统一 `MemoryBackend` 接口。
 - 配置必须外置到 `configs/` 或 `.env`，不要硬编码密钥、模型地址、路径。
+- 真实 API Key 只能放在本地环境变量或未跟踪 `.env`，不得写入仓库、配置示例或测试。
 - 所有实验输出写入 `traces/` 或 `eval/reports/`，不要混在源码目录。
 
 ## 3. Agent 执行安全

@@ -1,6 +1,6 @@
 # Project Status
 
-更新日期：2026-07-06
+更新日期：2026-07-07
 
 ## 当前结论
 
@@ -73,6 +73,7 @@ P1：在已完成文档和项目骨架基础上，跑通 `smolagents` 最小 age
 | 2026-07-06 | 使用 Homebrew 安装 `uv` 和 Python 3.11 | 建立正式项目运行环境 |
 | 2026-07-06 | 将 Mem0 本地状态目录重定向到项目 `.local/mem0` | 避免默认写入 `~/.mem0` |
 | 2026-07-06 | `AgentRunner` 接入真实 `smolagents` loop | 通过离线 FakeModel 保持可重复测试 |
+| 2026-07-07 | 新增 qwen3.7-plus OpenAI-compatible 模型配置入口 | 真实 key 只从 `WQ_API_KEY` 环境变量读取 |
 
 ## 验证记录
 
@@ -85,10 +86,13 @@ P1：在已完成文档和项目骨架基础上，跑通 `smolagents` 最小 age
 | 2026-07-06 | smolagents smoke | PASS | 使用本地 FakeModel 初始化 `ToolCallingAgent` 并调用测试工具 |
 | 2026-07-06 | Mem0 import | PASS | 设置 `MEM0_DIR=.local/mem0` 后 import 成功 |
 | 2026-07-06 | AgentRunner integration | PASS | 4 tests passed；验证 memory_context、ToolCallingAgent、trace JSONL |
+| 2026-07-07 | Model factory tests | PASS | 7 tests passed；验证 offline 与 WQ OpenAI-compatible 配置 |
+| 2026-07-07 | Offline manual agent smoke | PASS | `scripts/run_agent_once.py --provider offline` 成功，trace 写入 `/private/tmp` |
+| 2026-07-07 | qwen3.7-plus live smoke | NOT RUN | 当前执行环境未设置 `WQ_API_KEY`；未把用户提供的 key 写入命令或仓库 |
 
 ## 下次接手建议
 
-1. 实现受控 shell 工具的安全版本。
-2. 实现轻量 vision 工具占位到可配置接口。
-3. 开始 P2-T4：接入 `Mem0Backend`，并保持 `MEM0_DIR` 项目内重定向。
-4. 为 `AgentRunner` 增加真实 OpenAI-compatible model 配置入口。
+1. 在用户本地 shell 设置 `WQ_API_KEY` 后运行 qwen3.7-plus live smoke。
+2. 实现受控 shell 工具的安全版本。
+3. 实现轻量 vision 工具占位到可配置接口。
+4. 开始 P2-T4：接入 `Mem0Backend`，并保持 `MEM0_DIR` 项目内重定向。

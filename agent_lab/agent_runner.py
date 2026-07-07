@@ -9,6 +9,7 @@ from smolagents import Tool, ToolCallingAgent
 from smolagents.models import Model
 
 from agent_lab.memory.base import MemoryBackend
+from agent_lab.model_factory import create_model_from_env
 from agent_lab.offline_model import OfflineFinalAnswerModel
 from agent_lab.smol_tools import CalculatorTool
 from agent_lab.trace import AgentTrace, JsonlTraceWriter
@@ -37,6 +38,24 @@ class AgentRunner:
         self.tools = tools or [CalculatorTool()]
         self.trace_writer = JsonlTraceWriter(trace_path) if trace_path else None
         self.max_steps = max_steps
+
+    @classmethod
+    def from_env(
+        cls,
+        memory: MemoryBackend,
+        *,
+        provider: str | None = None,
+        tools: list[Tool] | None = None,
+        trace_path: str | Path | None = None,
+        max_steps: int = 2,
+    ) -> AgentRunner:
+        return cls(
+            memory=memory,
+            model=create_model_from_env(provider),
+            tools=tools,
+            trace_path=trace_path,
+            max_steps=max_steps,
+        )
 
     def run(
         self,
